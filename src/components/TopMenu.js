@@ -4,11 +4,16 @@ import React from 'react';
 import BackIcon from '../assets/icons/back.svg';
 import SettingsIcon from '../assets/icons/settings.svg';
 
-const TopMenu = ({onPressLeft, title, onPressRight, leftIcon = 'Back' , rightIcon}) => {
+const TopMenu = ({
+  onPressLeft,
+  title,
+  onPressRight,
+  leftIcon = 'Back',
+  rightIcon,
+}) => {
   const icons = {
     back: <BackIcon width={28} height={28} />,
-    settings : <SettingsIcon width={28} height={28} />,
-
+    settings: <SettingsIcon width={28} height={28} />,
   };
 
   return (
