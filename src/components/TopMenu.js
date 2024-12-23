@@ -2,10 +2,13 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 
 import BackIcon from '../assets/icons/back.svg';
+import SettingsIcon from '../assets/icons/settings.svg';
 
 const TopMenu = ({onPressLeft, title, onPressRight, leftIcon = 'Back' , rightIcon}) => {
   const icons = {
-    Back: <BackIcon width={28} height={28} />,
+    back: <BackIcon width={28} height={28} />,
+    settings : <SettingsIcon width={28} height={28} />,
+
   };
 
   return (
@@ -61,7 +64,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 27,
+    fontSize: 30,
     color: 'white',
     fontWeight: '600',
     textAlign: 'center',

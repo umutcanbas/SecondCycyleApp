@@ -1,21 +1,21 @@
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import TopMenu from '../../components/TopMenu';
-import routes from '../../navigation/routes';
 
-const Profile = ({navigation}) => {
-  const goSettings = () => {
-    navigation.navigate(routes.OTHER_NAVIGATOR, {screen: routes.SETTINGS});
-  };
+const Settings = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
-      <TopMenu title="Profile" rightIcon="settings" onPressRight={goSettings} />
-      <Text>Profile</Text>
+      <TopMenu
+        title="Settings"
+        onPressLeft={() => navigation.goBack()}
+        leftIcon="back"
+      />
+      <Text>Settings</Text>
     </SafeAreaView>
   );
 };
 
-export default Profile;
+export default Settings;
 
 const styles = StyleSheet.create({
   container: {
