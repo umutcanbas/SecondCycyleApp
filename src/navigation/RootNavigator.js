@@ -3,7 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import AuthNavigator from './AuthNavigator';
 import AppNavigator from './AppNavigator';
-
+import OtherNavigatior from './OtherNavigator';
 
 import routes from './routes';
 
@@ -18,7 +18,10 @@ const RootNavigator = () => {
         }}>
         <Stack.Screen name={routes.AUTH_NAVIGATOR} component={AuthNavigator} />
         <Stack.Screen name={routes.APP_NAVIGATOR} component={AppNavigator} />
-
+        <Stack.Screen
+          name={routes.OTHER_NAVIGATOR}
+          component={OtherNavigatior}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
