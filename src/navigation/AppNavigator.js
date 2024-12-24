@@ -3,7 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import routes from './routes';
 
 import Home from '../screens/App/Home';
-import Profile from '../screens/App/Profile';
+import Profile from '../screens/App/Profile/Profile';
 import Notification from '../screens/App/Notification';
 import Chat from '../screens/App/Chat';
 

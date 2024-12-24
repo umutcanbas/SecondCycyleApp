@@ -1,7 +1,7 @@
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import TopMenu from '../../components/TopMenu';
-import routes from '../../navigation/routes';
+import TopMenu from '../../../components/TopMenu';
+import routes from '../../../navigation/routes';
 
 const Profile = ({navigation}) => {
   const goSettings = () => {

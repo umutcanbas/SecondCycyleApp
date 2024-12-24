@@ -9,7 +9,8 @@ export const routes = {
   NOTIFICATION: 'Notification',
   PROFILE: 'Profile',
   CHAT: 'Chat',
-  SETTINGS:'Settings'
+  SETTINGS:'Settings',
+  USER_INFO:'UserInfo'
 };
 
 export default routes;

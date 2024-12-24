@@ -1,12 +1,12 @@
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
-import TopMenu from '../../components/TopMenu';
-import Button from '../../components/Button';
+import TopMenu from '../../../components/TopMenu';
+import Button from '../../../components/Button';
 
 import {useDispatch} from 'react-redux';
-import {logout} from '../../redux/slice';
-import routes from '../../navigation/routes';
+import {logout} from '../../../redux/slice';
+import routes from '../../../navigation/routes';
 
 const Settings = ({navigation}) => {
   const dispatch = useDispatch();
@@ -15,6 +15,10 @@ const Settings = ({navigation}) => {
     dispatch(logout());
     navigation.navigate(routes.AUTH_NAVIGATOR, {screen: routes.LOGIN});
   };
+
+  const goInfo = () => {
+    navigation.navigate(routes.OTHER_NAVIGATOR, {screen: routes.USER_INFO});
+  }
   return (
     <SafeAreaView style={styles.container}>
       <TopMenu
@@ -22,13 +26,9 @@ const Settings = ({navigation}) => {
         onPressLeft={() => navigation.goBack()}
         leftIcon="back"
       />
-      <Button title="User info" containerStyles={{backgroundColor: 'black'}} />
-      <Button
-        title="Location info"
-        containerStyles={{backgroundColor: 'black'}}
-      />
+      <Button title="User info" containerStyles={{backgroundColor: 'black'}} onPress={goInfo} />
 
-      <View style={{marginTop: 550}}>
+      <View style={{marginTop: 620}}>
         <Button
           title="Log out"
           containerStyles={{backgroundColor: 'red'}}
