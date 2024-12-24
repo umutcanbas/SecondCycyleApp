@@ -10,7 +10,7 @@ const SplashScreen = ({navigation}) => {
 
   useEffect(() => {
     setTimeout(() => {
-      if (false) {
+      if (isLogged) {
         navigation.replace(routes.APP_NAVIGATOR);
       } else {
         navigation.replace(routes.AUTH_NAVIGATOR ,{screen:routes.LOGIN})
