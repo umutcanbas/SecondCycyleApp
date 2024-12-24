@@ -20,7 +20,7 @@ const SplashScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Splash Screen</Text>
+      <Text style={styles.title}>Second Cycyle</Text>
     </SafeAreaView>
   );
 };
@@ -37,5 +37,6 @@ const styles = StyleSheet.create({
   title: {
     color: 'white',
     fontSize: 25,
+    fontWeight:'bold'
   },
 });

@@ -1,8 +1,15 @@
-import {Alert, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  Alert,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 
-import CustomInput from '../../components/Input';
-import CustomButton from '../../components/Button';
+import Input from '../../components/Input';
+import Button from '../../components/Button';
 
 import routes from '../../navigation/routes';
 
@@ -23,7 +30,7 @@ const SingUp = ({navigation}) => {
   };
 
   const onPressRegister = async () => {
-   if (password !== rePassword) {
+    if (password !== rePassword) {
       Alert.alert('Hata', 'Şifreler uyuşmuyor');
       return;
     }
@@ -44,31 +51,37 @@ const SingUp = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>SingUp</Text>
-      </View>
-      <CustomInput value={email} onChangeText={setEmail} placeholder="E-mail" />
-      <CustomInput
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-        isSecure
-      />
-      <CustomInput
-        value={rePassword}
-        onChangeText={setRepassword}
-        placeholder="RePassword"
-        isSecure
-      />
-
-        <CustomButton title="Go Back" onPress={goLogin} />
-        <CustomButton
+      <KeyboardAvoidingView behavior="padding">
+        <View style={styles.header}>
+          <Text style={styles.headerText}>SingUp</Text>
+        </View>
+        <Input value={email} onChangeText={setEmail} placeholder="E-mail" />
+        <Input
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Password"
+          isSecure
+        />
+        <Input
+          value={rePassword}
+          onChangeText={setRepassword}
+          placeholder="RePassword"
+          isSecure
+        />
+  
+        <Button
           title="SingUp"
           onPress={onPressRegister}
           loading={loading}
-          isDisabled={email.trim() === '' || password.trim() === '' || rePassword.trim() === ''}
+          isDisabled={
+            email.trim() === '' ||
+            password.trim() === '' ||
+            rePassword.trim() === ''
+          }
         />
 
+        <Button title="Go Back" onPress={goLogin} />
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -90,5 +103,4 @@ const styles = StyleSheet.create({
     fontSize: 35,
     color: 'white',
   },
- 
 });

@@ -1,4 +1,4 @@
-import {Alert, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {Alert, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 
 import Input from '../../components/Input';
@@ -36,6 +36,7 @@ const Login = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView behavior="padding">
       <View style={styles.header}>
         <Text style={styles.headerText}>Login</Text>
       </View>
@@ -47,24 +48,27 @@ const Login = ({navigation}) => {
         isSecure
       />
 
-      <Button
-        title="Login"
-        onPress={handleLogin}
-        loading={loading}
-        isDisabled={email.trim() === '' || password.trim() === ''}
-      />
-      <Button
-        title="Register"
-        onPress={goSingUp}
-        containerStyles={styles.containerStyles}
-      />
-
-<View style={{marginTop:40}} >
-
-      <Button title="Google" icon="google" />
-      <Button title="Apple" icon="apple" />
-      <Button title="Facebook" icon="facebook" />
-</View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Login"
+          onPress={handleLogin}
+          loading={loading}
+          isDisabled={email.trim() === '' || password.trim() === ''}
+          containerStyles={{width: '50%'}}
+        />
+        <Button
+          title="Register"
+          onPress={goSingUp}
+          containerStyles={{width: '50%'}}
+        />
+      </View>
+      <View style={{marginTop: 40}}>
+        <Text style={styles.buttonText}>Login with</Text>
+        <Button title="Google" icon="google" />
+        <Button title="Apple" icon="apple" />
+        <Button title="Facebook" icon="facebook" />
+      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -88,5 +92,11 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
+  },
+
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 20,
   },
 });
