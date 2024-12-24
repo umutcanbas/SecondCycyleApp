@@ -14,8 +14,9 @@ import Button from '../../components/Button';
 import routes from '../../navigation/routes';
 
 import {useDispatch} from 'react-redux';
-
 import {login} from '../../redux/slice';
+
+import auth from '@react-native-firebase/auth';
 
 const SingUp = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -36,6 +37,8 @@ const SingUp = ({navigation}) => {
     }
     try {
       setLoading(true);
+
+      await auth().createUserWithEmailAndPassword(email, password);
 
       await dispatch(login());
 
@@ -68,7 +71,7 @@ const SingUp = ({navigation}) => {
           placeholder="RePassword"
           isSecure
         />
-  
+
         <Button
           title="SingUp"
           onPress={onPressRegister}

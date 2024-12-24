@@ -7,8 +7,9 @@ import Button from '../../components/Button';
 import routes from '../../navigation/routes';
 
 import {useDispatch} from 'react-redux';
-
 import {login} from '../../redux/slice';
+
+import auth from '@react-native-firebase/auth';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -18,15 +19,17 @@ const Login = ({navigation}) => {
   const dispatch = useDispatch();
 
   const handleLogin = async () => {
+    setLoading(true);
     try {
-      /* await dispatch(login()); */
-      console.log('Giriş yapıldı');
-
-      setLoading(false);
-      navigation.replace(routes.APP_NAVIGATOR);
+      await auth().signInWithEmailAndPassword(email, password);
+      dispatch(login());
+      console.log('Giriş Başarılı');
+  
+      navigation.navigate(routes.APP_NAVIGATOR);
     } catch (error) {
-      setLoading(false);
       console.log('HATAA', error);
+    } finally {
+      setLoading(false);
     }
   };
 
