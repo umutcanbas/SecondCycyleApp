@@ -16,6 +16,6 @@ export default Chat
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:'#BCCCDC'
+    backgroundColor:'white'
   },
 })
