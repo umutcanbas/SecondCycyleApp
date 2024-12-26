@@ -5,6 +5,7 @@ export const routes = {
   SPLASHSCREEN: 'SplashScreen',
   LOGIN: 'Login',
   SINGUP: 'SingUp',
+  ONBOARDING: 'OnBoarding',
   HOME: 'Home',
   NOTIFICATION: 'Notification',
   PROFILE: 'Profile',
