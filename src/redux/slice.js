@@ -5,11 +5,8 @@ import {MMKV} from 'react-native-mmkv';
 const storage = new MMKV();
 const isLogged = storage.getBoolean('isLogged');
 
-const userId = storage.getString('userId');
-
 const initialState = {
   isLogged: isLogged || false,
-  userId: userId || '',
 };
 
 const slice = createSlice({
@@ -24,13 +21,9 @@ const slice = createSlice({
       state.isLogged = false;
       storage.set('isLogged', state.isLogged);
     },
-    setUserId: (state, action) => {
-      state.userId = action.payload;
-      storage.set('userId', state.userId);
-    },
   },
 });
 
-export const {login, logout, setUserId} = slice.actions;
+export const {login, logout} = slice.actions;
 
 export default slice.reducer;
