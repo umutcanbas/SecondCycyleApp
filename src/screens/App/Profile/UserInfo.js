@@ -1,5 +1,5 @@
 import {KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 
 import TopMenu from '../../../components/TopMenu';
 import Input from '../../../components/Input';
@@ -9,8 +9,8 @@ import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
 const UserInfo = ({navigation}) => {
-  const [userName, setUserName] = React.useState('');
-  const [userAddress, setUserAddress] = React.useState('');
+  const [userName, setUserName] = useState('');
+  const [userAddress, setUserAddress] = useState('');
 
   const saveInfo = () => {
     const currentUser = auth().currentUser;
