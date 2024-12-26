@@ -1,4 +1,11 @@
-import {Alert, KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  Alert,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 
 import Input from '../../components/Input';
@@ -10,6 +17,7 @@ import {useDispatch} from 'react-redux';
 import {login} from '../../redux/slice';
 
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -24,8 +32,26 @@ const Login = ({navigation}) => {
       await auth().signInWithEmailAndPassword(email, password);
       dispatch(login());
       console.log('Giriş Başarılı');
-  
-      navigation.navigate(routes.APP_NAVIGATOR);
+
+      const currentUser = auth().currentUser;
+
+      if (currentUser) {
+        const userId = currentUser.uid;
+
+        const snapshot = await database().ref(`/users/${userId}`).once('value');
+
+        if (snapshot.exists()) {
+          const userInfo = snapshot.val();
+
+          if (!userInfo.username || userInfo.username === 'Guest') {
+            navigation.replace(routes.ONBOARDING);
+          } else {
+            navigation.replace(routes.APP_NAVIGATOR);
+          }
+        } else {
+          navigation.replace(routes.ONBOARDING);
+        }
+      }
     } catch (error) {
       console.log('HATAA', error);
     } finally {
@@ -40,37 +66,37 @@ const Login = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior="padding">
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Login</Text>
-      </View>
-      <Input value={email} onChangeText={setEmail} placeholder="E-mail" />
-      <Input
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-        isSecure
-      />
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Login</Text>
+        </View>
+        <Input value={email} onChangeText={setEmail} placeholder="E-mail" />
+        <Input
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Password"
+          isSecure
+        />
 
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Login"
-          onPress={handleLogin}
-          loading={loading}
-          isDisabled={email.trim() === '' || password.trim() === ''}
-          containerStyles={{width: '50%'}}
-        />
-        <Button
-          title="Register"
-          onPress={goSingUp}
-          containerStyles={{width: '50%'}}
-        />
-      </View>
-      <View style={{marginTop: 40}}>
-        <Text style={styles.buttonText}>Login with</Text>
-        <Button title="Google" icon="google" />
-        <Button title="Apple" icon="apple" />
-        <Button title="Facebook" icon="facebook" />
-      </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Login"
+            onPress={handleLogin}
+            loading={loading}
+            isDisabled={email.trim() === '' || password.trim() === ''}
+            containerStyles={{width: '50%'}}
+          />
+          <Button
+            title="Register"
+            onPress={goSingUp}
+            containerStyles={{width: '50%'}}
+          />
+        </View>
+        <View style={{marginTop: 40}}>
+          <Text style={styles.buttonText}>Login with</Text>
+          <Button title="Google" icon="google" />
+          <Button title="Apple" icon="apple" />
+          <Button title="Facebook" icon="facebook" />
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
