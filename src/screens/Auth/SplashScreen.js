@@ -5,22 +5,49 @@ import routes from '../../navigation/routes';
 
 import {useSelector} from 'react-redux';
 
+import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
+
 const SplashScreen = ({navigation}) => {
   const isLogged = useSelector(state => state.slice.isLogged);
 
   useEffect(() => {
-    setTimeout(() => {
-      if (isLogged) {
-        navigation.replace(routes.APP_NAVIGATOR);
-      } else {
-        navigation.replace(routes.AUTH_NAVIGATOR ,{screen:routes.LOGIN})
+    const currentUser = auth().currentUser;
+
+    if (isLogged) {
+      if (currentUser) {
+        const userId = currentUser.uid;
+        console.log('userId', userId);
+        database()
+          .ref(`/users/${userId}`)
+          .once('value')
+          .then(snapshot => {
+            if (snapshot.exists()) {
+              const data = snapshot.val();
+              !data.userName || data.userName == 'Guest'
+                ? navigation.replace(routes.AUTH_NAVIGATOR, {
+                    screen: routes.ONBOARDING,
+                  })
+                : navigation.replace(routes.APP_NAVIGATOR);
+            } else {
+              console.log('No user data found.');
+              navigation.replace(routes.AUTH_NAVIGATOR, {
+                screen: routes.ONBOARDING,
+              });
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching user data:', error);
+          });
       }
-    }, 1000);
+    } else {
+      navigation.replace(routes.AUTH_NAVIGATOR, {screen: routes.LOGIN});
+    }
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Second Cycyle</Text>
+      <Text style={styles.title}>Second Cycle</Text>
     </SafeAreaView>
   );
 };
@@ -37,6 +64,6 @@ const styles = StyleSheet.create({
   title: {
     color: 'white',
     fontSize: 25,
-    fontWeight:'bold'
+    fontWeight: 'bold',
   },
 });
