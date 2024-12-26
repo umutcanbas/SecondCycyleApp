@@ -32,7 +32,7 @@ const SingUp = ({navigation}) => {
 
   const onPressRegister = async () => {
     if (password !== rePassword) {
-      Alert.alert('Hata', 'Şifreler uyuşmuyor');
+      Alert.alert('Hata', 'Passwords do not match');
       return;
     }
     try {
@@ -44,7 +44,7 @@ const SingUp = ({navigation}) => {
 
       console.log('üyelik olusturuldu');
 
-      navigation.navigate(routes.APP_NAVIGATOR);
+      navigation.replace(routes.AUTH_NAVIGATOR, {screen: routes.ONBOARDING});
     } catch (error) {
       console.log('HATAAA', error);
     } finally {
