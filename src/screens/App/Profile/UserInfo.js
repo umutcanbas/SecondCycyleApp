@@ -1,5 +1,12 @@
-import {KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React, { useState } from 'react';
+import {
+  Alert,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import React, {useState} from 'react';
 
 import TopMenu from '../../../components/TopMenu';
 import Input from '../../../components/Input';
@@ -16,6 +23,15 @@ const UserInfo = ({navigation}) => {
     const currentUser = auth().currentUser;
     if (!currentUser) {
       console.error('No authenticated user found.');
+      return;
+    }
+
+    if (!userName.trim() || !userAddress.trim()) {
+      Alert.alert(
+        'Invalid Input',
+        'Please fill out both the username and address fields.',
+        [{text: 'OK'}],
+      );
       return;
     }
 
@@ -42,28 +58,28 @@ const UserInfo = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior="padding">
-      <TopMenu
-        title="User Info"
-        onPressLeft={() => navigation.goBack()}
-        leftIcon="back"
-      />
+        <TopMenu
+          title="User Info"
+          onPressLeft={() => navigation.goBack()}
+          leftIcon="back"
+        />
 
-      <Input
-        value={userName}
-        onChangeText={setUserName}
-        placeholder="Enter your username"
-      />
-      <Input
-        value={userAddress}
-        onChangeText={setUserAddress}
-        placeholder="Enter your address"
-      />
+        <Input
+          value={userName}
+          onChangeText={setUserName}
+          placeholder="Enter your username"
+        />
+        <Input
+          value={userAddress}
+          onChangeText={setUserAddress}
+          placeholder="Enter your address"
+        />
 
-      <Button
-        title="Save"
-        onPress={saveInfo}
-        containerStyles={{backgroundColor: 'red'}}
-      />
+        <Button
+          title="Save"
+          onPress={saveInfo}
+          containerStyles={{backgroundColor: 'red'}}
+        />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
