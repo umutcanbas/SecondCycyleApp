@@ -2,11 +2,10 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import routes from './routes';
 
-import Home from '../screens/App/Home';
+import HomeNavigator from './HomeNavigator';
 import Profile from '../screens/App/Profile/Profile';
 import Notification from '../screens/App/Notification';
 import Chat from '../screens/App/Chat';
-
 
 import HomeLine from '../assets/icons/home.svg';
 import HomeFill from '../assets/icons/home-fill.svg';
@@ -39,12 +38,12 @@ const AppNavigator = () => {
         tabBarStyle: {
           borderTopWidth: 1,
           backgroundColor: 'white',
-          borderColor:'grey'
+          borderColor: 'grey',
         },
         tabBarIcon: ({focused}) => {
           let IconComponent;
 
-          if (route.name === routes.HOME) {
+          if (route.name === routes.HOME_NAVIGATOR) {
             IconComponent = focused ? iconList?.homeFill : iconList?.home;
           } else if (route.name === routes.NOTIFICATION) {
             IconComponent = focused
@@ -56,11 +55,12 @@ const AppNavigator = () => {
             IconComponent = focused ? iconList?.profileFill : iconList?.profile;
           }
 
-
-          return <IconComponent width={27} height={27} style={{marginTop:20}}/>;
+          return (
+            <IconComponent width={27} height={27} style={{marginTop: 20}} />
+          );
         },
       })}>
-      <Tab.Screen name={routes.HOME} component={Home} />
+      <Tab.Screen name={routes.HOME_NAVIGATOR} component={HomeNavigator} />
       <Tab.Screen name={routes.NOTIFICATION} component={Notification} />
       <Tab.Screen name={routes.CHAT} component={Chat} />
       <Tab.Screen name={routes.PROFILE} component={Profile} />

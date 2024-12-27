@@ -3,6 +3,7 @@ import React from 'react';
 
 import BackIcon from '../assets/icons/back.svg';
 import SettingsIcon from '../assets/icons/settings.svg';
+import Plus from '../assets/icons/add.svg';
 
 const TopMenu = ({
   onPressLeft,
@@ -14,6 +15,7 @@ const TopMenu = ({
   const icons = {
     back: <BackIcon width={28} height={28} />,
     settings: <SettingsIcon width={28} height={28} />,
+    plus: <Plus width={28} height={28} />,
   };
 
   return (

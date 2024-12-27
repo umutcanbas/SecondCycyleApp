@@ -1,17 +1,19 @@
 export const routes = {
   AUTH_NAVIGATOR: 'AuthNavigator',
   APP_NAVIGATOR: 'AppNavigator',
+  HOME_NAVIGATOR: 'HomeNavigator',
   OTHER_NAVIGATOR: 'OtherNavigator',
   SPLASHSCREEN: 'SplashScreen',
   LOGIN: 'Login',
   SINGUP: 'SingUp',
   ONBOARDING: 'OnBoarding',
   HOME: 'Home',
+  ADD_PRODUCT: 'AddProduct',
   NOTIFICATION: 'Notification',
   PROFILE: 'Profile',
   CHAT: 'Chat',
-  SETTINGS:'Settings',
-  USER_INFO:'UserInfo'
+  SETTINGS: 'Settings',
+  USER_INFO: 'UserInfo',
 };
 
 export default routes;
