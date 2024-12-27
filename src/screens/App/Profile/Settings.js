@@ -18,7 +18,7 @@ const Settings = ({navigation}) => {
 
   const goInfo = () => {
     navigation.navigate(routes.OTHER_NAVIGATOR, {screen: routes.USER_INFO});
-  }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <TopMenu
@@ -26,7 +26,11 @@ const Settings = ({navigation}) => {
         onPressLeft={() => navigation.goBack()}
         leftIcon="back"
       />
-      <Button title="User info" containerStyles={{backgroundColor: 'black'}} onPress={goInfo} />
+      <Button
+        title="User info"
+        containerStyles={{backgroundColor: 'black'}}
+        onPress={goInfo}
+      />
 
       <View style={{marginTop: 620}}>
         <Button

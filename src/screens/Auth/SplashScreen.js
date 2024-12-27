@@ -17,7 +17,7 @@ const SplashScreen = ({navigation}) => {
     if (isLogged) {
       if (currentUser) {
         const userId = currentUser.uid;
-        console.log('userId', userId);
+
         database()
           .ref(`/users/${userId}`)
           .once('value')
