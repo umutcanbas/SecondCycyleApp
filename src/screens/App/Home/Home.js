@@ -2,9 +2,10 @@ import {SafeAreaView, Text, StyleSheet, View} from 'react-native';
 import React from 'react';
 
 import TopMenu from '../../../components/TopMenu';
-import Button from '../../../components/Button';
+
 
 import routes from '../../../navigation/routes';
+
 import Products from '../../../components/Products';
 
 const Home = ({navigation}) => {
