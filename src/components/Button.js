@@ -10,6 +10,7 @@ import React from 'react';
 import AppleIcon from '../assets/icons/apple.svg';
 import GoogleIcon from '../assets/icons/google.svg';
 import FacebookIcon from '../assets/icons/facebook.svg';
+import Plus from '../assets/icons/add.svg';
 
 const Button = ({
   title,
@@ -24,6 +25,7 @@ const Button = ({
     apple: <AppleIcon width={24} height={24} />,
     google: <GoogleIcon width={24} height={24} />,
     facebook: <FacebookIcon width={24} height={24} />,
+    plus: <Plus width={24} height={24} />,
   };
 
   return (

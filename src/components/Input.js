@@ -4,11 +4,23 @@ import React, {useState} from 'react';
 import EyeOpen from '../assets/icons/eye-open.svg';
 import EyeClose from '../assets/icons/eye-close.svg';
 
-const Input = ({value, onChangeText, placeholder, isSecure = false}) => {
+const Input = ({
+  value,
+  onChangeText,
+  placeholder,
+  keyboardType,
+  isSecure = false,
+  containerStyles,
+  isMultiline=false,
+}) => {
   const [isSecureText, setSecureText] = useState(isSecure);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        ...styles.container,
+        ...containerStyles,
+      }}>
       <TextInput
         style={styles.input}
         onChangeText={onChangeText}
@@ -17,6 +29,8 @@ const Input = ({value, onChangeText, placeholder, isSecure = false}) => {
         placeholderTextColor="black"
         autoCapitalize="none"
         secureTextEntry={isSecureText}
+        keyboardType={keyboardType}
+        multiline={isMultiline}
       />
       {isSecure && (
         <TouchableOpacity
