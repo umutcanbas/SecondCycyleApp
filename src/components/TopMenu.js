@@ -5,6 +5,7 @@ import BackIcon from '../assets/icons/back.svg';
 import SettingsIcon from '../assets/icons/settings.svg';
 import Plus from '../assets/icons/add.svg';
 import Close from '../assets/icons/close.svg';
+import Heart from '../assets/icons/heart.svg';
 
 
 const TopMenu = ({
@@ -21,6 +22,7 @@ const TopMenu = ({
     settings: <SettingsIcon width={28} height={28} />,
     plus: <Plus width={28} height={28} />,
     close: <Close width={24} height={24} />,
+    heart: <Heart width={24} height={24} />,
   };
 
   return (
