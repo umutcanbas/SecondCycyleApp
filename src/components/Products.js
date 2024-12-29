@@ -1,9 +1,32 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import database from '@react-native-firebase/database';
+
+import routes from '../navigation/routes';
+import {useNavigation} from '@react-navigation/native';
+
+import DefaultImage from '../assets/png/ProductDefault.png';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
+  const screenWidth = Dimensions.get('window').width;
+
+  const navigation = useNavigation();
+
+  const goDetail = product => {
+    navigation.navigate(routes.OTHER_NAVIGATOR, {
+      screen: routes.PRODUCT_DETAIL,
+      params: {product},
+    });
+  };
 
   useEffect(() => {
     const productsRef = database().ref('/products');
@@ -12,7 +35,6 @@ const ProductList = () => {
       const productsData = snapshot.val();
 
       if (productsData) {
-        // Firebase'den gelen veriyi bir diziye dönüştürün
         const formattedProducts = Object.keys(productsData).flatMap(userId =>
           Object.keys(productsData[userId]).map(productId => ({
             id: productId,
@@ -29,13 +51,35 @@ const ProductList = () => {
     return () => productsRef.off('value', onValueChange);
   }, []);
 
-  const renderItem = ({item}) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{item.productName}</Text>
-      <Text>{item.description}</Text>
-      <Text>${item.price}</Text>
-    </View>
-  );
+  const renderItem = ({item}) => {
+    const {productInfo, userInfo} = item;
+
+    return (
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => goDetail(item)}
+        style={[styles.card, {width: screenWidth / 2 - 20}]}>
+        <View style={styles.title}>
+          <Text
+            style={styles.productName}
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            {productInfo?.productName}
+          </Text>
+          <Text numberOfLines={1} ellipsizeMode="tail" style={styles.price}>
+            ${productInfo?.price}
+          </Text>
+        </View>
+        <Image source={DefaultImage} style={styles.image} />
+        <Text style={styles.description} numberOfLines={4} ellipsizeMode="tail">
+          {productInfo?.description}
+        </Text>
+        <Text style={styles.userInfo} numberOfLines={1} ellipsizeMode="tail">
+          Seller: {userInfo?.userName}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -43,10 +87,11 @@ const ProductList = () => {
         data={products}
         keyExtractor={item => item.id}
         renderItem={renderItem}
+        bounces={false}
+        numColumns={2}
         ListEmptyComponent={
           <Text style={styles.listEmpty}>No products available.</Text>
         }
-        bounces={false}
       />
     </View>
   );
@@ -57,37 +102,57 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f7f8fa',
   },
-  item: {
+  card: {
     backgroundColor: '#ffffff',
     padding: 16,
-    marginVertical: 8,
-    marginHorizontal: 8,
+    marginVertical: 16,
+    marginHorizontal: 10,
     borderRadius: 12,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    height: 250,
+    alignItems: 'center',
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333333',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
   },
-  description: {
-    fontSize: 14,
-    color: '#555555',
+  productName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'black',
+    flex: 1,
   },
   price: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
-    color: '#007BFF',
+    color: 'green',
+    marginLeft: 8,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+    marginVertical: 14,
+    resizeMode: 'cover',
+  },
+  description: {
+    fontSize: 12,
+    color: '#2f4f4f',
+    textAlign: 'center',
+    marginTop: 5,
   },
   listEmpty: {
     textAlign: 'center',
+    justifyContent: 'center',
     marginTop: 20,
     fontSize: 16,
-    color: '#999999',
+    color: 'black',
   },
 });
 
