@@ -5,7 +5,7 @@ import routes from './routes';
 import HomeNavigator from './HomeNavigator';
 import Profile from '../screens/App/Profile/Profile';
 import Notification from '../screens/App/Notification';
-import Chat from '../screens/App/Chat';
+import Chat from '../screens/Chat/Chat';
 
 import HomeLine from '../assets/icons/home.svg';
 import HomeFill from '../assets/icons/home-fill.svg';

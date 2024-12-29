@@ -15,6 +15,7 @@ export const routes = {
   CHAT: 'Chat',
   SETTINGS: 'Settings',
   USER_INFO: 'UserInfo',
+  MESSAGE: 'Message',
 };
 
 export default routes;
