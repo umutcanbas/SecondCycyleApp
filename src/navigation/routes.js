@@ -9,6 +9,7 @@ export const routes = {
   ONBOARDING: 'OnBoarding',
   HOME: 'Home',
   ADD_PRODUCT: 'AddProduct',
+  PRODUCT_DETAIL: 'ProductDetail',
   NOTIFICATION: 'Notification',
   PROFILE: 'Profile',
   CHAT: 'Chat',
