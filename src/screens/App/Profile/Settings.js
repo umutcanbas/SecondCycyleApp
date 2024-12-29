@@ -6,16 +6,25 @@ import Button from '../../../components/Button';
 
 import {useDispatch} from 'react-redux';
 import {logout} from '../../../redux/slice';
+
 import routes from '../../../navigation/routes';
+
+import auth from '@react-native-firebase/auth';
 
 const Settings = ({navigation}) => {
   const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigation.navigate(routes.AUTH_NAVIGATOR, {screen: routes.LOGIN});
-  };
+  const handleLogout = async () => {
+    try {
+      await auth().signOut();
+      dispatch(logout());
 
+      console.log('User logged out');
+      navigation.navigate(routes.AUTH_NAVIGATOR, {screen: routes.LOGIN});
+    } catch (error) {
+      console.error('Error removing isLogged:', error);
+    }
+  };
   const goInfo = () => {
     navigation.navigate(routes.OTHER_NAVIGATOR, {screen: routes.USER_INFO});
   };
@@ -37,7 +46,7 @@ const Settings = ({navigation}) => {
           title="Log out"
           containerStyles={{backgroundColor: 'red'}}
           titleStyles={{color: 'black'}}
-          onPress={handleLogout}
+          onPress={() => handleLogout()}
         />
       </View>
     </SafeAreaView>
