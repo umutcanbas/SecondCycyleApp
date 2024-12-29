@@ -7,6 +7,7 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import database from '@react-native-firebase/database';
 
@@ -15,10 +16,10 @@ import {useNavigation} from '@react-navigation/native';
 
 import DefaultImage from '../assets/png/ProductDefault.png';
 
-const ProductList = () => {
+const ProductList = ({userProducts}) => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const screenWidth = Dimensions.get('window').width;
-
   const navigation = useNavigation();
 
   const goDetail = product => {
@@ -29,6 +30,7 @@ const ProductList = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     const productsRef = database().ref('/products');
 
     const onValueChange = productsRef.on('value', snapshot => {
@@ -46,12 +48,18 @@ const ProductList = () => {
       } else {
         setProducts([]);
       }
+      setLoading(false);
     });
 
-    return () => productsRef.off('value', onValueChange);
+    return () => {
+      productsRef.off('value', onValueChange);
+      setLoading(false);
+    };
   }, []);
 
-  const renderItem = ({item}) => {
+  const data = userProducts ? userProducts : products;
+
+  const RenderItem = ({item}) => {
     const {productInfo, userInfo} = item;
 
     return (
@@ -59,34 +67,41 @@ const ProductList = () => {
         activeOpacity={0.8}
         onPress={() => goDetail(item)}
         style={[styles.card, {width: screenWidth / 2 - 20}]}>
-        <View style={styles.title}>
-          <Text
-            style={styles.productName}
-            numberOfLines={1}
-            ellipsizeMode="tail">
-            {productInfo?.productName}
-          </Text>
-          <Text numberOfLines={1} ellipsizeMode="tail" style={styles.price}>
-            ${productInfo?.price}
-          </Text>
-        </View>
+        <Text style={styles.productName} numberOfLines={1} ellipsizeMode="tail">
+          {productInfo?.productName.toUpperCase()}
+        </Text>
+
         <Image source={DefaultImage} style={styles.image} />
+
         <Text style={styles.description} numberOfLines={4} ellipsizeMode="tail">
           {productInfo?.description}
         </Text>
+
         <Text style={styles.userInfo} numberOfLines={1} ellipsizeMode="tail">
           Seller: {userInfo?.userName}
+        </Text>
+
+        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.price}>
+          ${productInfo?.price}
         </Text>
       </TouchableOpacity>
     );
   };
 
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="black" />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={products}
+        data={data}
         keyExtractor={item => item.id}
-        renderItem={renderItem}
+        renderItem={({item}) => <RenderItem item={item} />}
         bounces={false}
         numColumns={2}
         ListEmptyComponent={
@@ -116,23 +131,23 @@ const styles = StyleSheet.create({
     height: 250,
     alignItems: 'center',
   },
-  title: {
+  header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
   },
   productName: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'black',
     flex: 1,
+    marginRight: 8,
   },
   price: {
     fontSize: 14,
     fontWeight: '600',
     color: 'green',
-    marginLeft: 8,
   },
   image: {
     width: 100,
@@ -153,6 +168,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 16,
     color: 'black',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
