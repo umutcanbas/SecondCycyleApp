@@ -12,11 +12,26 @@ const AddProduct = ({navigation}) => {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [userId, setUserId] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     const currentUser = auth().currentUser;
     if (currentUser) {
       setUserId(currentUser.uid);
+
+      const userRef = database().ref(`/users/${currentUser.uid}`);
+      userRef
+        .once('value')
+        .then(snapshot => {
+          if (snapshot.exists()) {
+            setUserInfo(snapshot.val());
+          } else {
+            console.log('Kullanıcı bilgisi bulunamadı.');
+          }
+        })
+        .catch(error => {
+          console.error('Hata:', error);
+        });
     }
   }, []);
 
@@ -27,10 +42,13 @@ const AddProduct = ({navigation}) => {
     }
 
     const product = {
-      productName,
-      description,
-      price,
-      userId,
+      productInfo: {
+        productName,
+        description,
+        price,
+      },
+
+      userInfo,
     };
 
     database()
