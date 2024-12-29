@@ -47,7 +47,6 @@ const AddProduct = ({navigation}) => {
         description,
         price,
       },
-
       userInfo,
     };
 

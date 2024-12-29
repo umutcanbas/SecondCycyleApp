@@ -30,8 +30,6 @@ const Login = ({navigation}) => {
     setLoading(true);
     try {
       await auth().signInWithEmailAndPassword(email, password);
-      dispatch(login());
-      console.log('Giriş Başarılı');
 
       const currentUser = auth().currentUser;
 
@@ -43,7 +41,10 @@ const Login = ({navigation}) => {
         if (snapshot.exists()) {
           const userInfo = snapshot.val();
 
-          if (!userInfo.username || userInfo.username === 'Guest') {
+          if (!userInfo.userName || userInfo.userName === 'Guest') {
+            dispatch(login());
+            console.log('Giriş Başarılı');
+
             navigation.replace(routes.ONBOARDING);
           } else {
             navigation.replace(routes.APP_NAVIGATOR);
