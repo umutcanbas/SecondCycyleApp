@@ -16,7 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 
 import DefaultImage from '../assets/png/ProductDefault.png';
 
-const ProductList = ({userProducts}) => {
+const ProductList = ({userProducts, children}) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -109,6 +109,7 @@ const ProductList = ({userProducts}) => {
         ListEmptyComponent={
           <Text style={styles.listEmpty}>No products available.</Text>
         }
+        ListFooterComponent={children}
       />
     </View>
   );

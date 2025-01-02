@@ -1,13 +1,30 @@
 import React from 'react';
 
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import ProductList from '../../../components/Products';
+import Button from '../../../components/Button';
+
+import {clearFavorites} from '../../../redux/slice';
 
 const Favorities = () => {
   const favoriteList = useSelector(state => state.slice.favoriteList);
+  const dispatch = useDispatch();
 
-  return <ProductList userProducts={favoriteList} />;
+  const clearFavorities = () => {
+    dispatch(clearFavorites());
+  };
+
+  return (
+    <ProductList userProducts={favoriteList}>
+      <Button
+        title="Clear Favorities"
+        onPress={clearFavorities}
+        containerStyles={{backgroundColor: 'red'}}
+        titleStyles={{color: 'black'}}
+      />
+    </ProductList>
+  );
 };
 
 export default Favorities;
