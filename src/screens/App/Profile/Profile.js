@@ -69,7 +69,6 @@ const Profile = ({navigation}) => {
           tabBarInactiveTintColor: '#687684',
           tabBarLabelStyle: {fontSize: 22},
           tabBarStyle: {backgroundColor: 'white'},
-
         }}>
         <Tab.Screen
           name="Products"
