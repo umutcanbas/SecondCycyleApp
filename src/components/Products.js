@@ -19,7 +19,9 @@ import DefaultImage from '../assets/png/ProductDefault.png';
 const ProductList = ({userProducts}) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const screenWidth = Dimensions.get('window').width;
+
   const navigation = useNavigation();
 
   const goDetail = product => {

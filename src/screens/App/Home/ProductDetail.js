@@ -1,5 +1,5 @@
 import {SafeAreaView, ScrollView, StyleSheet, Text, Image} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import TopMenu from '../../../components/TopMenu';
 import Button from '../../../components/Button';
@@ -11,6 +11,9 @@ import routes from '../../../navigation/routes';
 import {changeFavoriteList} from '../../../redux/slice';
 import {useDispatch, useSelector} from 'react-redux';
 
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
+
 const ProductDetail = ({route, navigation}) => {
   const product = route.params.product;
 
@@ -20,11 +23,64 @@ const ProductDetail = ({route, navigation}) => {
 
   const isfavorite = favoriteList.find(item => item.id === product.id);
 
-  const sendMessage = () => {
-    navigation.navigate(routes.OTHER_NAVIGATOR, {
-      screen: routes.MESSAGE,
-      params: {product},
-    });
+  const [currentUserId, setCurrentUserId] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const currentUser = auth().currentUser;
+
+      if (currentUser) {
+        const userId = currentUser.uid;
+
+        try {
+          const snapshot = await database()
+            .ref(`/users/${userId}`)
+            .once('value');
+
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            setCurrentUserId(data.userId);
+          } else {
+            console.log('No user data found.');
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const sendMessage = async () => {
+    const receiverId = product.userInfo?.userId;
+
+    if (!receiverId) {
+      console.error('Receiver ID not found.');
+      return;
+    }
+
+    const chatId = [currentUserId, receiverId].sort().join('_');
+
+    try {
+      await database()
+        .ref(`/chats/${chatId}`)
+        .set({
+          users: {
+            [currentUserId]: true,
+            [receiverId]: true,
+          },
+          lastMessage: null,
+          timestamp: database.ServerValue.TIMESTAMP,
+        });
+
+      navigation.navigate(routes.OTHER_NAVIGATOR, {
+        screen: routes.MESSAGE,
+        params: {chatId, product},
+      });
+    } catch (error) {
+      console.error('Error creating chat path:', error);
+    }
   };
 
   return (
@@ -56,11 +112,13 @@ const ProductDetail = ({route, navigation}) => {
           Seller: {product.userInfo?.userName}
         </Text>
 
-        <Button
-          title="Start Chat"
-          onPress={() => sendMessage()}
-          containerStyles={{backgroundColor: 'red'}}
-        />
+        {currentUserId === product.userInfo?.userId ? null : (
+          <Button
+            title="Start Chat"
+            onPress={() => sendMessage()}
+            containerStyles={{backgroundColor: 'red'}}
+          />
+        )}
       </ScrollView>
     </SafeAreaView>
   );
