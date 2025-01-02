@@ -1,16 +1,21 @@
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+
 import routes from '../../../navigation/routes';
 
 import TopMenu from '../../../components/TopMenu';
 import ProductList from '../../../components/Products';
 
 import auth from '@react-native-firebase/auth';
-import database, {set} from '@react-native-firebase/database';
+import database from '@react-native-firebase/database';
+import Favorities from './Favorities';
+
+const Tab = createMaterialTopTabNavigator();
 
 const Profile = ({navigation}) => {
-  const [userName, setUserName] = useState('');
+  const [userData, setUserData] = useState('');
   const [userProduct, setUserProduct] = useState({});
 
   useEffect(() => {
@@ -22,7 +27,8 @@ const Profile = ({navigation}) => {
           .ref(`/users/${user.uid}`)
           .once('value');
         const userData = userNameSnapshot.val();
-        setUserName(userData.userName);
+
+        setUserData(userData);
 
         //Products
         const userProductSnapshot = await database()
@@ -50,9 +56,28 @@ const Profile = ({navigation}) => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <TopMenu title={userName} rightIcon="settings" onPressRight={goSettings} />
+      <TopMenu
+        title={userData?.userName}
+        rightIcon="settings"
+        onPressRight={goSettings}
+      />
 
-      <ProductList userProducts={userProduct} />
+      <Tab.Navigator
+        initialRouteName="Products"
+        screenOptions={{
+          tabBarActiveTintColor: 'black',
+          tabBarInactiveTintColor: '#687684',
+          tabBarLabelStyle: {fontSize: 22},
+          tabBarStyle: {backgroundColor: 'white'},
+
+        }}>
+        <Tab.Screen
+          name="Products"
+          children={() => <ProductList userProducts={userProduct} />}
+        />
+
+        <Tab.Screen name="Favorities" component={Favorities} />
+      </Tab.Navigator>
     </SafeAreaView>
   );
 };

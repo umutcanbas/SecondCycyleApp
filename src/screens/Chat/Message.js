@@ -3,11 +3,14 @@ import React from 'react';
 import TopMenu from '../../components/TopMenu';
 
 const Message = ({route, navigation}) => {
-  console.log(route.params);
+  const productInfo = route.params.product.productInfo;
+  const sellerInfo = route.params.product.userInfo;
+
+  console.log(sellerInfo)
   return (
     <SafeAreaView>
       <TopMenu
-        title="Message"
+        title={productInfo.productName}
         onPressLeft={() => navigation.goBack()}
         leftIcon="back"
       />

@@ -16,6 +16,7 @@ export const routes = {
   SETTINGS: 'Settings',
   USER_INFO: 'UserInfo',
   MESSAGE: 'Message',
+  FAVORITIES: 'Favorities',
 };
 
 export default routes;

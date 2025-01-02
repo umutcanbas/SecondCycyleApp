@@ -5,7 +5,7 @@ import TopMenu from '../../components/TopMenu'
 const Chat = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <TopMenu title='Chat' />
+      <TopMenu title='Chat Rooms' />
       <Text>Chat</Text>
     </SafeAreaView>
   )
