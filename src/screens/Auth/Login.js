@@ -6,20 +6,20 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
 import routes from '../../navigation/routes';
 
-import {useDispatch} from 'react-redux';
-import {login} from '../../redux/slice';
+import { useDispatch } from 'react-redux';
+import { login } from '../../redux/slice';
 
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -43,10 +43,9 @@ const Login = ({navigation}) => {
 
           if (!userInfo.userName || userInfo.userName === 'Guest') {
             dispatch(login());
-            console.log('Giriş Başarılı');
-
             navigation.replace(routes.ONBOARDING);
           } else {
+            dispatch(login());
             navigation.replace(routes.APP_NAVIGATOR);
           }
         } else {
@@ -54,14 +53,15 @@ const Login = ({navigation}) => {
         }
       }
     } catch (error) {
-      console.log('HATAA', error);
+      console.error('Login Error:', error);
+      Alert.alert('Login Failed', error.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const goSingUp = () => {
-    navigation.navigate(routes.SINGUP);
+  const goSignUp = () => {
+    navigation.navigate(routes.SIGNUP);
   };
 
   return (
@@ -84,19 +84,13 @@ const Login = ({navigation}) => {
             onPress={handleLogin}
             loading={loading}
             isDisabled={email.trim() === '' || password.trim() === ''}
-            containerStyles={{width: '50%'}}
+            containerStyles={{ width: '50%' }}
           />
           <Button
             title="Register"
-            onPress={goSingUp}
-            containerStyles={{width: '50%'}}
+            onPress={goSignUp}
+            containerStyles={{ width: '50%' }}
           />
-        </View>
-        <View style={{marginTop: 40}}>
-          <Text style={styles.buttonText}>Login with</Text>
-          <Button title="Google" icon="google" />
-          <Button title="Apple" icon="apple" />
-          <Button title="Facebook" icon="facebook" />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -122,11 +116,5 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-  },
-
-  buttonText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 20,
   },
 });
