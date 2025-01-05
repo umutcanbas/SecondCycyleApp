@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,6 +7,9 @@ import {
   Text,
   KeyboardAvoidingView,
 } from 'react-native';
+
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 import TopMenu from '../../components/TopMenu';
 import Input from '../../components/Input';
@@ -17,26 +20,58 @@ const Message = ({route, navigation}) => {
   const sellerInfo = route.params?.product.userInfo;
   const chatId = route.params?.chatId;
 
-  const [messages, setMessages] = useState();
+  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const currentUserId = auth().currentUser?.uid;
 
-  const sendMessage = () => {
+  useEffect(() => {
+    if (!chatId) return;
+
+    const chatRef = database().ref(`/chats/${chatId}/messages`);
+
+    const onValueChange = chatRef.on('value', snapshot => {
+      const data = snapshot.val();
+      if (data) {
+        const chatMessages = Object.entries(data).map(([key, value]) => ({
+          id: key,
+          ...value,
+        }));
+        setMessages(chatMessages);
+      } else {
+        setMessages([]);
+      }
+    });
+
+    return () => chatRef.off('value', onValueChange);
+  }, [chatId]);
+
+  const sendMessage = async () => {
     if (newMessage.trim() === '') return;
 
-    setMessages(prevMessages => [
-      ...prevMessages,
-      {id: Date.now().toString(), text: newMessage, sender: 'buyer'},
-    ]);
+    const message = {
+      text: newMessage,
+      timestamp: database.ServerValue.TIMESTAMP,
+      userName: sellerInfo.userName, // yanlıs
+    };
 
-    setNewMessage('');
+    try {
+      const chatRef = database().ref(
+        `/chats/${chatId}/messages/${currentUserId}`,
+      );
+      await chatRef.push(message);
+      setNewMessage('');
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
   };
 
   const renderMessage = ({item}) => {
+    const isCurrentUser = item.userId === currentUserId;
     return (
       <View
         style={[
           styles.messageBubble,
-          // sellerInfo.userName ===message.userName ? styles.seller : styles.buyer,
+          isCurrentUser ? styles.buyer : styles.seller,
         ]}>
         <Text style={styles.messageText}>{item.text}</Text>
       </View>
