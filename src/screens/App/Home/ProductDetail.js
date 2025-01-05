@@ -63,16 +63,9 @@ const ProductDetail = ({route, navigation}) => {
     const chatId = [currentUserId, receiverId].sort().join('_');
 
     try {
-      await database()
-        .ref(`/chats/${chatId}`)
-        .set({
-          users: {
-            [currentUserId]: true,
-            [receiverId]: true,
-          },
-          lastMessage: null,
-          timestamp: database.ServerValue.TIMESTAMP,
-        });
+      await database().ref(`/chats/${chatId}`).set({
+        product,
+      });
 
       navigation.navigate(routes.OTHER_NAVIGATOR, {
         screen: routes.MESSAGE,
