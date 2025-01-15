@@ -49,7 +49,9 @@ const Message = ({route, navigation}) => {
     const chatRef = database().ref(`/chats/${chatId}/messages`);
 
     const onValueChange = chatRef.on('value', snapshot => {
+
       const data = snapshot.val();
+
       if (data) {
         const chatMessages = Object.entries(data).map(([key, value]) => ({
           id: key,
@@ -70,13 +72,13 @@ const Message = ({route, navigation}) => {
     const message = {
       text: newMessage,
       timestamp: database.ServerValue.TIMESTAMP,
-      userName: userName,
+      userName: currentUserName,
       userId: currentUserId,
     };
 
     try {
       const chatRef = database().ref(`/chats/${chatId}/messages`);
-      await chatRef.push(message);
+       chatRef.push(message);
       setNewMessage('');
     } catch (error) {
       console.error('Error sending message:', error);
