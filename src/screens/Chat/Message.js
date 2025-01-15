@@ -22,7 +22,26 @@ const Message = ({route, navigation}) => {
 
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [currentUserName, setCurrentUserName] = useState('');
+
   const currentUserId = auth().currentUser?.uid;
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const user = await auth().currentUser;
+      try {
+        const userNameSnapshot = await database()
+          .ref(`/users/${user.uid}`)
+          .once('value');
+        const userData = userNameSnapshot.val();
+
+        setCurrentUserName(userData.userName);
+      } catch (error) {
+        console.log('Error fetching user data:', error);
+      }
+    };
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
     if (!chatId) return;
@@ -51,13 +70,12 @@ const Message = ({route, navigation}) => {
     const message = {
       text: newMessage,
       timestamp: database.ServerValue.TIMESTAMP,
-      userName: sellerInfo.userName, // yanlıs
+      userName: userName,
+      userId: currentUserId,
     };
 
     try {
-      const chatRef = database().ref(
-        `/chats/${chatId}/messages/${currentUserId}`,
-      );
+      const chatRef = database().ref(`/chats/${chatId}/messages`);
       await chatRef.push(message);
       setNewMessage('');
     } catch (error) {
@@ -67,6 +85,7 @@ const Message = ({route, navigation}) => {
 
   const renderMessage = ({item}) => {
     const isCurrentUser = item.userId === currentUserId;
+
     return (
       <View
         style={[
