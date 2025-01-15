@@ -6,20 +6,20 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
 import routes from '../../navigation/routes';
 
-import { useDispatch } from 'react-redux';
-import { login } from '../../redux/slice';
+import {useDispatch} from 'react-redux';
+import {login} from '../../redux/slice';
 
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
-const Login = ({ navigation }) => {
+const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -61,7 +61,7 @@ const Login = ({ navigation }) => {
   };
 
   const goSignUp = () => {
-    navigation.navigate(routes.SIGNUP);
+    navigation.navigate(routes.AUTH_NAVIGATOR, {screen: routes.SINGUP});
   };
 
   return (
@@ -84,12 +84,12 @@ const Login = ({ navigation }) => {
             onPress={handleLogin}
             loading={loading}
             isDisabled={email.trim() === '' || password.trim() === ''}
-            containerStyles={{ width: '50%' }}
+            containerStyles={{width: '50%'}}
           />
           <Button
             title="Register"
             onPress={goSignUp}
-            containerStyles={{ width: '50%' }}
+            containerStyles={{width: '50%'}}
           />
         </View>
       </KeyboardAvoidingView>
