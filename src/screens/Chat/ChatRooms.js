@@ -1,12 +1,20 @@
-import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 
 import TopMenu from '../../components/TopMenu';
 
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import routes from '../../navigation/routes';
 
-const Chat = () => {
+const Chat = ({navigation}) => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -59,7 +67,12 @@ const Chat = () => {
     const messageKeys = Object.keys(item.messages || {});
 
     return (
-      <View style={styles.chatItem}>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        onPress={()=>navigation.navigate(routes.OTHER_NAVIGATOR, {
+          screen: routes.MESSAGE,
+        })}
+        style={styles.chatItem}>
         <Text style={styles.productName}>{productName}</Text>
 
         {messageKeys.map(key => (
@@ -72,7 +85,7 @@ const Chat = () => {
             </Text>
           </View>
         ))}
-      </View>
+      </TouchableOpacity>
     );
   };
 
