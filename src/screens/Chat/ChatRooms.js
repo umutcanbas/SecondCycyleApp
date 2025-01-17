@@ -14,10 +14,19 @@ import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import routes from '../../navigation/routes';
 
+import {useIsFocused} from '@react-navigation/native';
+
 const Chat = ({navigation}) => {
+  const isFocused = useIsFocused();
+
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
+    if (!isFocused) {
+      setMessages([]);
+      return;
+    }
+
     const fetchUserChats = async () => {
       try {
         const user = auth().currentUser;
@@ -58,33 +67,37 @@ const Chat = ({navigation}) => {
     };
 
     fetchUserChats();
-  }, []);
+  }, [isFocused]);
 
   const RenderChats = ({item}) => {
-    const productName =
-      item.product?.productInfo?.description || 'Unnamed Product';
+    const message = Object.values(item.messages)[0];
 
-    const messageKeys = Object.keys(item.messages || {});
+    const receiver =
+      auth().currentUser.uid === item?.users?.buyer?.userId
+        ? item?.users?.seller
+        : item?.users?.buyer;
 
     return (
       <TouchableOpacity
         activeOpacity={0.5}
-        onPress={()=>navigation.navigate(routes.OTHER_NAVIGATOR, {
-          screen: routes.MESSAGE,
-        })}
+        onPress={() =>
+          navigation.navigate(routes.OTHER_NAVIGATOR, {
+            screen: routes.MESSAGE,
+            params: item,
+          })
+        }
         style={styles.chatItem}>
-        <Text style={styles.productName}>{productName}</Text>
+        <Text style={styles.productName}>{receiver?.userName}</Text>
 
-        {messageKeys.map(key => (
-          <View key={key} style={styles.chatItemInnerContainer}>
-            <Text style={styles.messageText}>
-              {item.messages[key]?.text || 'No message content'}
-            </Text>
-            <Text style={styles.messageText}>
-              {item.messages[key]?.userName || 'No user name'}
-            </Text>
-          </View>
-        ))}
+        <View style={styles.chatItemInnerContainer}>
+          <Text style={styles.messageText}>
+            {message?.userName || 'No user name'}:{' '}
+          </Text>
+
+          <Text style={[styles.messageText, {fontWeight: 600}]}>
+            {message?.text || 'No message content'}
+          </Text>
+        </View>
       </TouchableOpacity>
     );
   };
@@ -123,7 +136,6 @@ const styles = StyleSheet.create({
   },
   chatItemInnerContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   messageText: {
     fontSize: 14,
