@@ -53,27 +53,10 @@ const ProductDetail = ({route, navigation}) => {
   }, []);
 
   const sendMessage = async () => {
-    const receiverId = product.userInfo?.userId;
-
-    if (!receiverId) {
-      console.error('Receiver ID not found.');
-      return;
-    }
-
-    const chatId = [currentUserId, receiverId].sort().join('_');
-
-    try {
-      await database().ref(`/chats/${chatId}`).set({
-        product,
-      });
-
-      navigation.navigate(routes.OTHER_NAVIGATOR, {
-        screen: routes.MESSAGE,
-        params: {chatId, product},
-      });
-    } catch (error) {
-      console.error('Error creating chat path:', error);
-    }
+    navigation.navigate(routes.OTHER_NAVIGATOR, {
+      screen: routes.MESSAGE,
+      params: {...product, currentUserId},
+    });
   };
 
   return (
