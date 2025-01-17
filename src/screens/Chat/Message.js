@@ -16,16 +16,64 @@ import Input from '../../components/Input';
 import Button from '../../components/Button';
 
 const Message = ({route, navigation}) => {
-  const productInfo = route.params?.product.productInfo;
-  const sellerInfo = route.params?.product.userInfo;
-  const chatId = route.params?.chatId;
+  const data = route.params;
 
+  const buyer = data?.currentUserId || data?.users?.buyer?.userId;
+  const seller = data?.userInfo || data?.users?.seller;
+
+  /*  console.log(
+    JSON.stringify(
+      {
+        messages: {
+          '-OGpMt26BIBhVe6vOZ1a': {
+            text: 'k',
+            timestamp: 1737135985019,
+            userId: 'IJPI2TMUrMX5i7eCwJ0uZNMJS3A2',
+            userName: 'İbo',
+          },
+        },
+        seller: {
+          userAddress: 'hamidye',
+          userId: '7tRUFvBGbzU2UuZk8AyM7nYKsMK2',
+          userName: 'UMUT',
+        },
+      },
+      null,
+      2,
+    ),
+  ); */
+
+  /*   console.log(
+    'aaa',
+    JSON.stringify(
+      {
+        id: '-OGf2zute8jq01LC195b',
+        productInfo: {
+          description: 'Araba',
+          price: '3131',
+          productName: 'Deneme Umut',
+        },
+        userId: '7tRUFvBGbzU2UuZk8AyM7nYKsMK2',
+        userInfo: {
+          userAddress: 'hamidye',
+          userId: '7tRUFvBGbzU2UuZk8AyM7nYKsMK2',
+          userName: 'UMUT',
+        },
+      },
+      null,
+      2,
+    ),
+  );
+ */
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [currentUserName, setCurrentUserName] = useState('');
 
   const currentUserId = auth().currentUser?.uid;
 
+  const chatId = `${buyer}_${seller.userId}`;
+
+  //current user
   useEffect(() => {
     const fetchUserData = async () => {
       const user = await auth().currentUser;
@@ -47,9 +95,7 @@ const Message = ({route, navigation}) => {
     if (!chatId) return;
 
     const chatRef = database().ref(`/chats/${chatId}/messages`);
-
     const onValueChange = chatRef.on('value', snapshot => {
-
       const data = snapshot.val();
 
       if (data) {
@@ -69,6 +115,14 @@ const Message = ({route, navigation}) => {
   const sendMessage = async () => {
     if (newMessage.trim() === '') return;
 
+    const users = {
+      buyer: {
+        userId: currentUserId,
+        userName: currentUserName,
+      },
+      seller,
+    };
+
     const message = {
       text: newMessage,
       timestamp: database.ServerValue.TIMESTAMP,
@@ -78,7 +132,9 @@ const Message = ({route, navigation}) => {
 
     try {
       const chatRef = database().ref(`/chats/${chatId}/messages`);
-       chatRef.push(message);
+      const sellerRef = database().ref(`/chats/${chatId}/users`);
+      chatRef.push(message);
+      sellerRef.set(users);
       setNewMessage('');
     } catch (error) {
       console.error('Error sending message:', error);
@@ -103,11 +159,10 @@ const Message = ({route, navigation}) => {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <TopMenu
-          title={productInfo.productName}
+          title={seller.userName}
           onPressLeft={() => navigation.goBack()}
           leftIcon="back"
         />
-
         <FlatList
           data={messages}
           keyExtractor={item => item.id}
