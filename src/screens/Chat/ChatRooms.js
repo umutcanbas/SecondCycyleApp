@@ -109,6 +109,12 @@ const Chat = ({navigation}) => {
         data={messages}
         renderItem={({item}) => <RenderChats item={item} />}
         keyExtractor={(item, index) => index.toString()}
+        ListEmptyComponent={
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text>No chats found.</Text>
+          </View>
+        }
       />
     </SafeAreaView>
   );
@@ -127,6 +133,12 @@ const styles = StyleSheet.create({
     margin: 10,
     borderWidth: 1,
     borderRadius: 45,
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   productName: {
     fontSize: 22,

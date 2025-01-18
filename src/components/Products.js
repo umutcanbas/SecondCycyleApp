@@ -118,7 +118,7 @@ const ProductList = ({userProducts, children}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7f8fa',
+    backgroundColor: 'white',
   },
   card: {
     backgroundColor: '#ffffff',

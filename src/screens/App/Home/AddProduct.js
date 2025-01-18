@@ -72,31 +72,31 @@ const AddProduct = ({navigation}) => {
     <SafeAreaView style={styles.container}>
       <TopMenu
         title="Add Product"
-        onPressLeft={() => {
+        onPressRight={() => {
           addProduct();
         }}
-        leftText="Done"
-        onPressRight={() => navigation.goBack()}
-        rightIcon="close"
+        rightText="Done"
+        onPressLeft={() => navigation.goBack()}
+        leftIcon="close"
       />
       <Input
         placeholder="Product Name"
         value={productName}
         onChangeText={setProductName}
-        containerStyles={{backgroundColor: 'grey', padding: 10, height: 60}}
+        containerStyles={styles.input}
       />
       <Input
         placeholder="Price"
         value={price}
         onChangeText={setPrice}
         keyboardType="numeric"
-        containerStyles={{backgroundColor: 'grey', padding: 10, height: 60}}
+        containerStyles={styles.input}
       />
       <Input
         placeholder="Description"
         value={description}
         onChangeText={setDescription}
-        containerStyles={{height: 200, padding: 10, backgroundColor: 'grey'}}
+        containerStyles={{...styles.input , height:200} }
         isMultiline={true}
       />
     </SafeAreaView>
@@ -109,5 +109,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  input: {
+    backgroundColor: 'white', 
+    padding: 12,
+    height: 60,
+    borderRadius: 8, 
+    marginVertical: 10,
+    shadowColor: '#000', 
+    shadowOffset: {width: 0, height: 4}, 
+    shadowOpacity: 0.1, 
+    shadowRadius: 6, 
+    elevation: 5, 
+    borderWidth: 1,
   },
 });

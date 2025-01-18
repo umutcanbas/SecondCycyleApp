@@ -21,50 +21,6 @@ const Message = ({route, navigation}) => {
   const buyer = data?.currentUserId || data?.users?.buyer?.userId;
   const seller = data?.userInfo || data?.users?.seller;
 
-  /*  console.log(
-    JSON.stringify(
-      {
-        messages: {
-          '-OGpMt26BIBhVe6vOZ1a': {
-            text: 'k',
-            timestamp: 1737135985019,
-            userId: 'IJPI2TMUrMX5i7eCwJ0uZNMJS3A2',
-            userName: 'İbo',
-          },
-        },
-        seller: {
-          userAddress: 'hamidye',
-          userId: '7tRUFvBGbzU2UuZk8AyM7nYKsMK2',
-          userName: 'UMUT',
-        },
-      },
-      null,
-      2,
-    ),
-  ); */
-
-  /*   console.log(
-    'aaa',
-    JSON.stringify(
-      {
-        id: '-OGf2zute8jq01LC195b',
-        productInfo: {
-          description: 'Araba',
-          price: '3131',
-          productName: 'Deneme Umut',
-        },
-        userId: '7tRUFvBGbzU2UuZk8AyM7nYKsMK2',
-        userInfo: {
-          userAddress: 'hamidye',
-          userId: '7tRUFvBGbzU2UuZk8AyM7nYKsMK2',
-          userName: 'UMUT',
-        },
-      },
-      null,
-      2,
-    ),
-  );
- */
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [currentUserName, setCurrentUserName] = useState('');
