@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     height: 250,
     alignItems: 'center',
+    height: 280,
   },
   header: {
     flexDirection: 'row',
