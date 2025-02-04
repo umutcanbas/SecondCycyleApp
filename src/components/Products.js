@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: 'black',
-    flex: 1,
+    textAlign: 'center',
     marginRight: 8,
   },
   price: {
@@ -156,8 +156,7 @@ const styles = StyleSheet.create({
   image: {
     width: 100,
     height: 100,
-    borderRadius: 8,
-    marginVertical: 14,
+    marginVertical: 20,
     resizeMode: 'cover',
   },
   description: {
