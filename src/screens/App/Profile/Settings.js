@@ -35,9 +35,11 @@ const Settings = ({navigation}) => {
         onPressLeft={() => navigation.goBack()}
         leftIcon="back"
       />
+
       <Button
         title="User info"
         containerStyles={{backgroundColor: 'black'}}
+        titleStyles={{color: 'white'}}
         onPress={goInfo}
       />
 
