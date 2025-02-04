@@ -47,7 +47,7 @@ const Button = ({
         {title}
       </Text>
 
-      {loading && <ActivityIndicator color="white" style={{marginLeft: 5}} />}
+      {loading && <ActivityIndicator color="black" style={{marginLeft: 5}} />}
       {icon && <View />}
     </TouchableOpacity>
   );
@@ -65,10 +65,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 24,
     borderWidth: 1,
-    borderColor: 'white',
+    borderColor: 'black',
+    marginHorizontal: 10,
   },
   title: {
-    color: 'white',
+    color: 'black',
     fontSize: 16,
     fontWeight: '500',
   },
