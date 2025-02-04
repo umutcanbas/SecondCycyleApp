@@ -92,6 +92,12 @@ const Login = ({navigation}) => {
             containerStyles={{width: '50%'}}
           />
         </View>
+
+        <View style={{marginTop: 90}}>
+          <Button icon="apple" title="Sign in with Apple" />
+          <Button icon="google" title="Sign in with Google" />
+          <Button icon="facebook" title="Sign in with Facebook" />
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -102,7 +108,7 @@ export default Login;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#001A6E',
+    backgroundColor: 'white',
   },
   header: {
     justifyContent: 'center',
@@ -112,9 +118,11 @@ const styles = StyleSheet.create({
   headerText: {
     fontWeight: 'bold',
     fontSize: 35,
-    color: 'white',
+    color: 'black',
   },
   buttonContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: 400,
   },
 });

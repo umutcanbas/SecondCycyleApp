@@ -94,7 +94,7 @@ export default SingUp;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#001A6E',
+    backgroundColor: 'white',
   },
   header: {
     justifyContent: 'center',
@@ -104,6 +104,6 @@ const styles = StyleSheet.create({
   headerText: {
     fontWeight: 'bold',
     fontSize: 35,
-    color: 'white',
+    color: 'black',
   },
 });
